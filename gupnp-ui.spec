@@ -1,5 +1,5 @@
 %define name gupnp-ui
-%define version 0.1
+%define version 0.1.1
 %define release %mkrel 1
 %define major 0
 %define libname %mklibname %{name}  %{major}
@@ -9,10 +9,11 @@ Summary: GUI for gupnp
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: %{name}-%{version}.tar.bz2
-License: GPL
+Source0: http://gupnp.org/sources/gupnp-ui/%{name}-%{version}.tar.gz
+Patch: gupnp-ui-0.1.1-format-strings.patch
+License: LGPLv2+
 Group: Networking/Other
-Url: Networking/Other
+Url: http://gupnp.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: gupnp-devel
 
@@ -41,21 +42,20 @@ applications which will use gupnp-ui
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
 %prep
 %setup -q
-%configure
+%patch -p1
 
 %build
+%configure2_5x
 %make
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+%makeinstall_std
 
 %clean
 rm -rf %{buildroot}
