@@ -1,6 +1,6 @@
 %define name gupnp-ui
 %define version 0.1.1
-%define release %mkrel 2
+%define release %mkrel 3
 %define major 0
 %define libname %mklibname %{name}  %{major}
 %define develname %mklibname %{name} -d
@@ -16,6 +16,7 @@ Group: Networking/Other
 Url: http://gupnp.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: gupnp-devel
+BuildRequires: gtk+2-devel
 
 %description
 GUI for gupnp
@@ -39,11 +40,6 @@ Provides:       %{name}-devel = %{version}-%{release}
 %description -n %{develname}
 This package contains the headers that programmers will need to develop
 applications which will use gupnp-ui
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
 
 %prep
 %setup -q
