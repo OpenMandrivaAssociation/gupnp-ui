@@ -1,0 +1,12 @@
+diff -p -up gupnp-ui-0.1.1/tests/test-view.c~ gupnp-ui-0.1.1/tests/test-view.c
+--- gupnp-ui-0.1.1/tests/test-view.c~	2008-09-27 19:40:21.000000000 +0200
++++ gupnp-ui-0.1.1/tests/test-view.c	2009-09-11 21:47:43.000000000 +0200
+@@ -45,7 +45,7 @@ main (int argc, char **argv)
+         error = NULL;
+         context = gupnp_context_new (NULL, NULL, 0, &error);
+         if (error) {
+-                g_error (error->message);
++                g_error ("%s", error->message);
+                 g_error_free (error);
+ 
+                 return 1;
