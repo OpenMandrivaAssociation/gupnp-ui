@@ -1,93 +1,70 @@
-%define name gupnp-ui
-%define version 0.1.1
-%define release %mkrel 4
+%define api 1.0
 %define major 0
-%define libname %mklibname %{name}  %{major}
-%define develname %mklibname %{name} -d
+%define libname %mklibname %{name} %{api} %{major}
+%define devname %mklibname %{name} %{api} -d
 
-Summary: GUI for gupnp
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Source0: http://gupnp.org/sources/gupnp-ui/%{name}-%{version}.tar.gz
-Patch0: gupnp-ui-0.1.1-format-strings.patch
-License: LGPLv2+
-Group: Networking/Other
-Url: http://gupnp.org/
-BuildRequires: gupnp-devel
-BuildRequires: pkgconfig(gtk+-2.0)
-buildrequires: gtk-doc
+Summary:	GUI for gupnp
+Name:		gupnp-ui
+Version:	0.1.1
+Release:	5
+License:	LGPLv2+
+Group:		Networking/Other
+Url:		http://gupnp.org/
+Source0:	http://gupnp.org/sources/%{name}/%{name}-%{version}.tar.gz
+Patch0:		gupnp-ui-0.1.1-format-strings.patch
+BuildRequires:	pkgconfig(gssdp-1.0)
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(gtk-doc)
+BuildRequires:	pkgconfig(gupnp-1.0)
 
 %description
-GUI for gupnp
+GUI for gupnp.
+
+#----------------------------------------------------------------------------
 
 %package -n %{libname}
-
-Summary:        Main library for gupnp-ui
-Group:          System/Libraries
-Provides:       %{name} = %{version}-%{release}
+Summary:	Shared library for gupnp-ui
+Group:		System/Libraries
+Conflicts:	%{_lib}gupnp-ui0 < 0.1.1-5
+Obsoletes:	%{_lib}gupnp-ui0 < 0.1.1-5
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
 linked with gupnp-ui.
 
-%package -n     %{develname}
-Summary:        Headers for developing programs that will use gupnp-ui
-Group:          Development/C
-Requires:       %{libname} = %{version}
-Provides:       %{name}-devel = %{version}-%{release}
+%files -n %{libname}
+%{_libdir}/lib%{name}-%{api}.so.%{major}*
 
-%description -n %{develname}
+#----------------------------------------------------------------------------
+
+%package -n %{devname}
+Summary:	Headers for developing programs that will use gupnp-ui
+Group:		Development/C
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
+Conflicts:	%{_lib}gupnp-ui-devel < 0.1.1-5
+Obsoletes:	%{_lib}gupnp-ui-devel < 0.1.1-5
+
+%description -n %{devname}
 This package contains the headers that programmers will need to develop
-applications which will use gupnp-ui
+applications which will use gupnp-ui.
+
+%files -n %{devname}
+%{_libdir}/pkgconfig/gupnp-ui-%{api}.pc
+%{_includedir}/gupnp-ui-%{api}/lib%{name}/*.h
+%{_libdir}/lib%{name}-%{api}.so
+%{_datadir}/gtk-doc/html/%{name}/*
+
+#----------------------------------------------------------------------------
 
 %prep
 %setup -q
 %patch0 -p1
 
 %build
-autoreconf -vif
-%configure2_5x
-%make
+%configure2_5x --disable-static
+%make LIBS="-lgupnp-1.0 -lgtk-x11-2.0 -lgobject-2.0 -lgssdp-1.0"
 
 %install
 %makeinstall_std
-
-%files -n %{libname}
-%{_libdir}/*.so.%{major}*
-
-%files -n %{develname}
-%{_libdir}/pkgconfig/gupnp-ui*.pc
-%{_includedir}/gupnp-ui-1.0/lib%{name}/*.h
-%{_libdir}/*.so
-%{_libdir}/*.a
-%{_datadir}/gtk-doc/html/%{name}/*
-
-
-
-%changelog
-* Tue Aug 30 2011 Götz Waschk <waschk@mandriva.org> 0.1.1-4mdv2012.0
-+ Revision: 697462
-- rebuild
-
-* Tue Sep 21 2010 Götz Waschk <waschk@mandriva.org> 0.1.1-3mdv2011.0
-+ Revision: 580331
-- update build deps
-
-* Sun Sep 20 2009 Götz Waschk <waschk@mandriva.org> 0.1.1-2mdv2010.0
-+ Revision: 445783
-- rebuild for new libgupnp
-
-* Fri Sep 11 2009 Götz Waschk <waschk@mandriva.org> 0.1.1-1mdv2010.0
-+ Revision: 438524
-- new version
-- fix URL
-- fix format strings
-- fix build
-
-  + Pixel <pixel@mandriva.com>
-    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
-
-  + Erwan Velu <erwan@mandriva.org>
-    - import gupnp-ui
 
