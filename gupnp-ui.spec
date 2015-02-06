@@ -6,7 +6,7 @@
 Summary:	GUI for gupnp
 Name:		gupnp-ui
 Version:	0.1.1
-Release:	5
+Release:	6
 License:	LGPLv2+
 Group:		Networking/Other
 Url:		http://gupnp.org/
