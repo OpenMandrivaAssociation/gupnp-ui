@@ -9,7 +9,7 @@ Version:	0.1.1
 Release:	6
 License:	LGPLv2+
 Group:		Networking/Other
-Url:		http://gupnp.org/
+Url:		https://gupnp.org/
 Source0:	http://gupnp.org/sources/%{name}/%{name}-%{version}.tar.gz
 Patch0:		gupnp-ui-0.1.1-format-strings.patch
 BuildRequires:	pkgconfig(gssdp-1.0)
